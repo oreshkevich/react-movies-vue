@@ -3,7 +3,11 @@
     <h3 class="list-title">{{ listTitle }}</h3>
     <BRow>
       <template v-if="isExist">
-        <BCol cols="3" v-for="(movie, key) in list" :key="key">
+        <BCol
+          class=" col-5  col-sm-4 col-lg-3"
+          v-for="(movie, key) in list"
+          :key="key"
+        >
           <MovieItem
             :movie="movie"
             @mouseover.native="onMouseOver(movie.Poster)"
@@ -32,43 +36,43 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from "vuex";
-import MovieItem from "./MovieItem";
-import MovieInfoModalContent from "./MovieInfoModalContent";
+import { mapActions, mapGetters } from 'vuex';
+import MovieItem from './MovieItem';
+import MovieInfoModalContent from './MovieInfoModalContent';
 
 export default {
-  name: "MoviesList",
+  name: 'MoviesList',
   props: {
     list: {
       type: Object,
-      default: () => ({})
-    }
+      default: () => ({}),
+    },
   },
   data: () => ({
-    movieInfoModalID: "movie-info",
-    selectedMovieID: ""
+    movieInfoModalID: 'movie-info',
+    selectedMovieID: '',
   }),
   components: {
     MovieItem,
-    MovieInfoModalContent
+    MovieInfoModalContent,
   },
   computed: {
-    ...mapGetters("movies", ["isSearch"]),
+    ...mapGetters('movies', ['isSearch']),
     isExist() {
       return Boolean(Object.keys(this.list).length);
     },
     listTitle() {
-      return this.isSearch ? "Search result" : "IMDB Top 250";
+      return this.isSearch ? 'Search result' : 'IMDB Top 250';
     },
     selectedMovie() {
       return this.selectedMovieID ? this.list[this.selectedMovieID] : null;
-    }
+    },
   },
   methods: {
-    ...mapActions("movies", ["removeMovie"]),
-    ...mapActions(["showNotify"]),
+    ...mapActions('movies', ['removeMovie']),
+    ...mapActions(['showNotify']),
     onMouseOver(poster) {
-      this.$emit("changePoster", poster);
+      this.$emit('changePoster', poster);
     },
     async onRemoveItem({ id, title }) {
       const isConfirmed = await this.$bvModal.msgBoxConfirm(
@@ -78,9 +82,9 @@ export default {
       if (isConfirmed) {
         this.removeMovie(id);
         this.showNotify({
-          msg: "Movie deleted successful",
-          variant: "success",
-          title: "Success"
+          msg: 'Movie deleted successful',
+          variant: 'success',
+          title: 'Success',
         });
       }
     },
@@ -91,8 +95,8 @@ export default {
     onCloseModal() {
       this.selectedMovieID = null;
       this.$bvModal.hide(this.movieInfoModalID);
-    }
-  }
+    },
+  },
 };
 </script>
 
@@ -109,3 +113,4 @@ export default {
   padding: 0 !important;
 }
 </style>
+
